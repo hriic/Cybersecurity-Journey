@@ -1,37 +1,60 @@
 # Cybersecurity Journey
 
-This repository is where I document what I learn while building my skills in cybersecurity.
+A practical record of my cybersecurity learning, labs and technical notes. My main direction is **penetration testing and Red Teaming**, with enough defensive knowledge to understand what my activity looks like from the other side.
 
-My main direction is **penetration testing and Red Teaming**. I use these notes to keep track of concepts I have studied, commands I actually use, labs I have completed, mistakes I made, and topics I still need to improve.
+This repository is not intended to be a badge list or a collection of copied commands. I use it to document **how technologies work, why I choose a technique, what output means, and how one finding changes the next step**.
 
-## Notes
+## Knowledge Base
 
-| Area | What I am documenting |
+| Area | What is documented |
 | --- | --- |
-| [Networking](Networking/) | Protocols, ports, DNS and packet analysis |
-| [Linux](Linux/) | Linux fundamentals and terminal usage |
-| [Nmap](Nmap/) | Discovery, scanning and service enumeration |
-| [Web Security](Web-Security/) | Web enumeration and application-security fundamentals |
-| [Active Directory](Active-Directory/) | Windows domain and AD fundamentals |
-| [CTF & Labs](CTF-Writeups/) | Lessons from authorized training labs |
-| [TryHackMe](TryHackMe/) | Topics and skills practiced on TryHackMe |
-| [Blue Team & SOC](Blue-Team-SOC/) | Detection, logs, alerts and SOC concepts |
-| [Programming](Programming/) | C++, Python and problem solving |
+| [Networking](Networking/) | TCP/UDP, addressing, common protocols, DNS and traffic analysis |
+| [Nmap](Nmap/) | Host discovery, scanning, service detection, NSE and output interpretation |
+| [Linux](Linux/) | Filesystem, permissions, processes, networking, shell workflow and kernel basics |
+| [Windows](Windows/) | Windows/PowerShell fundamentals and Windows Server lab concepts |
+| [Active Directory](Active-Directory/) | Domains, DCs, identity, groups, authentication, GPO and permissions |
+| [Web Security](Web-Security/) | HTTP, enumeration, curl, Gobuster, Burp, fingerprinting, WebDAV and SQLi concepts |
+| [Security Tools](Security-Tools/) | Detailed notes on tools I have actually used and how I choose between them |
+| [Methodology](Methodology/) | My evidence-driven penetration-testing workflow |
+| [Security Fundamentals](Security-Fundamentals/) | Attack/defense concepts and testing frameworks |
+| [TryHackMe](TryHackMe/) | Hands-on topics, lab practice and lessons |
+| [CTF Writeups](CTF-Writeups/) | Authorized challenge notes and lessons learned |
+| [Blue Team / SOC](Blue-Team-SOC/) | Events, alerts, logs, detections and my SentinelX project |
+| [Programming](Programming/) | C++, Python, algorithms and problem solving |
 
-## Roadmap
+## How I approach a target
 
-I keep my current direction and the areas I still need to improve in [Learning-Roadmap.md](Learning-Roadmap.md).
+My current mental model is:
 
-## How I study
+**scope → reconnaissance → discovery → ports → services → deeper enumeration → hypothesis → authorized validation → local enumeration → privilege escalation → evidence/reporting**
 
-I am trying to avoid memorizing commands without understanding them. When I learn a tool or technique, I want to know:
+I try to avoid memorizing a chain of commands. For each action I ask:
 
-- What does it do?
-- Why am I using it?
-- What does the output mean?
-- What should I investigate next?
-- What did I learn when something failed?
+1. What question am I trying to answer?
+2. Why is this tool/protocol appropriate?
+3. What does the output actually prove?
+4. What does it *not* prove?
+5. What should I investigate next?
 
-This repository will keep changing as I gain more hands-on experience.
+## Hands-on environment
 
-> Security testing documented here is limited to systems I own or authorized training environments.
+My practice includes TryHackMe and isolated virtual labs with Linux, Windows and Windows Server. I have worked with network protocols, Nmap, packet analysis, web enumeration, Windows/AD fundamentals and both offensive and defensive security concepts.
+
+## Current direction
+
+My priority is building strong junior penetration-testing fundamentals and then progressing deeper into web testing, Active Directory security and Red Team skills. I also maintain defensive/SOC knowledge because understanding logs and detection makes offensive work more complete.
+
+## Documentation standard
+
+I want each topic in this repository to become something I could explain in an interview:
+- concept and purpose;
+- how it works;
+- commands/tools I have personally practiced;
+- interpretation of output;
+- security relevance;
+- common mistakes or limitations;
+- connection to the wider testing methodology.
+
+The repository will continue to grow as I gain hands-on experience.
+
+> All security testing documented here is limited to systems I own or explicitly authorized training environments.
