@@ -1,67 +1,91 @@
-# Web Security & Enumeration
+# Web Security Knowledge Base
 
-Web testing is one of the areas I am developing for penetration testing. I am focusing first on understanding HTTP and application behavior, then using tools to test specific hypotheses.
+This directory documents the web-security concepts I have studied and practiced in authorized labs. My goal is to preserve **reasoning, architecture, evidence, and methodology** rather than collect copied commands or room answers.
 
-## HTTP mental model
+## Study map
 
-A browser sends an HTTP request containing a method, path, headers and sometimes a body. The server returns a status code, headers and a response body. Understanding that exchange makes tools such as curl and Burp Suite much easier to reason about.
+| Topic | What I documented |
+| --- | --- |
+| [Modern Web Stacks](Modern-Web-Stacks.md) | Frontend/backend architecture, MERN, Next.js, middleware, sessions, debug/config exposure, Prototype Pollution concepts |
+| [Express & Node.js](Express-and-NodeJS.md) | Node vs Express, middleware, routes, sessions, static files, verbose errors, database clues |
+| [Nginx](Nginx-Security.md) | Web server vs reverse proxy, directory indexing, backup exposure, upstream boundaries, logging |
+| [IIS, WebDAV & NTLM](IIS-WebDAV-NTLM.md) | IIS/ASP.NET, WebDAV methods, 401/201 interpretation, NTLM concepts, 8.3 short-name behavior, process context |
+| [Django & SQL Injection](Django-and-SQL-Injection.md) | Django clues, CSRF context, input-to-query reasoning, error-based SQLi concepts, SQLMap methodology |
+| [Web Attacks Lab Methodology](Web-Attacks-Lab-Methodology.md) | Apache, Python HTTP server, Nginx, Express, IIS/WebDAV and the repeatable testing workflow |
+| [HTTP & Enumeration](HTTP-and-Enumeration.md) | Requests/responses, methods, status codes, headers, content discovery and evidence interpretation |
+| [Fingerprinting Cheat Sheet](Web-Fingerprinting-Cheatsheet.md) | Fast mapping from observed clue → likely meaning → next question |
 
-Common methods I encounter include GET and POST, while methods such as PUT, DELETE or OPTIONS can become relevant depending on application configuration.
+## Core mental model
 
-## Status codes
+A web application is usually layered:
 
-I read status codes as clues:
-- **2xx**: request succeeded.
-- **3xx**: redirection.
-- **4xx**: client-side/access/resource conditions such as 401, 403 or 404.
-- **5xx**: server-side failure.
-
-A status code by itself is not a vulnerability; I compare content, redirects, authentication behavior and context.
-
-## Initial enumeration
-
-For an authorized web target I may inspect:
-- page title and visible functionality;
-- response headers and redirects;
-- HTML/source comments and linked resources;
-- `robots.txt`;
-- technologies/frameworks using clues or Wappalyzer;
-- historical public pages with the Wayback Machine;
-- directories/files and virtual hosts;
-- authentication flows and cookies;
-- supported HTTP methods.
-
-## curl
-
-curl lets me interact with HTTP directly and see behavior without relying only on a browser.
-
-```bash
-curl -I http://TARGET/
-curl -A "R" -L http://TARGET/
+```text
+Browser
+   ↓
+HTTP / HTTPS
+   ↓
+Web Server / Reverse Proxy
+   ↓
+Application / Framework / API
+   ↓
+Database / Internal Services
 ```
 
-I have practiced changing the User-Agent, following redirects and searching returned content for technology/version clues.
+My first job is to determine which layer produced the behavior I am seeing.
 
-## Gobuster
+## Evidence before conclusions
 
-Gobuster can perform directory/file and virtual-host discovery using wordlists. I have practiced its web-enumeration modes and learned that results need validation: repeated status codes, redirects and wildcard behavior can create misleading output.
+I try to keep claims precise:
 
-## Burp Suite
+- a banner identifies a likely technology; it does not prove a vulnerability;
+- a 401 proves an authentication boundary exists; it does not prove weak credentials;
+- an allowed HTTP method proves capability; it does not prove unsafe authorization;
+- file creation does not automatically mean server-side execution;
+- application execution does not automatically mean administrative privileges;
+- a database error does not prove the database is directly reachable over the network.
 
-Burp Suite lets me intercept and inspect the exact request behind a browser action. This is useful for understanding parameters, headers, cookies, sessions and login behavior before I modify anything.
+## My current web-testing workflow
 
-## Technology fingerprinting
+```text
+Scope
+  ↓
+Service discovery
+  ↓
+HTTP baseline
+  ↓
+Technology fingerprinting
+  ↓
+Content / route / API enumeration
+  ↓
+Authentication and session analysis
+  ↓
+Input and trust-boundary analysis
+  ↓
+Specific vulnerability hypothesis
+  ↓
+Authorized manual validation
+  ↓
+Impact verification
+  ↓
+Evidence + remediation
+```
 
-Tools such as Wappalyzer and response/source clues can suggest what technologies are running. I use that information to narrow research, but I do not assume a product is vulnerable just because a version string exists.
+## Tools I have practiced
 
-## WebDAV
+I use tools such as curl, Nmap/NSE, Gobuster, Burp Suite, Wappalyzer, browser developer tools, and SQLMap where appropriate. The tool is secondary to the question I am trying to answer.
 
-I have encountered WebDAV in labs. Because WebDAV extends HTTP with content-management capabilities, exposed methods and authentication/configuration deserve careful inspection. I treat a 401 response as evidence that a resource exists and requires authentication, not as an automatic vulnerability.
+## Documentation rule
 
-## SQL injection and SQLMap
+For every web topic I want to be able to explain:
 
-I have studied SQL injection concepts and SQLMap in training environments. My preferred order is **understand input → observe request → form an injection hypothesis → test carefully → use automation where justified**. SQLMap should accelerate validated testing, not replace understanding.
+1. What is the technology?
+2. Where does it sit in the architecture?
+3. How can I recognize it?
+4. What normal behavior should I expect?
+5. Which configuration or coding mistakes matter?
+6. What evidence proves the finding?
+7. What does the evidence **not** prove?
+8. How does the finding connect to the wider attack chain?
+9. How should it be remediated or detected?
 
-## What I am improving
-
-I am building toward stronger manual web testing, OWASP-style methodology, authentication/session analysis and the ability to explain *why* each request is being made rather than following a walkthrough blindly.
+> All testing described in this repository is limited to systems I own or explicitly authorized training environments.
